@@ -37,7 +37,7 @@ export default function MeshHero({ children }: { children: ReactNode }) {
         />
       </svg>
 
-      <div className="container-page pb-20 pt-28 md:pb-28 md:pt-32">{children}</div>
+      <div className="container-page pb-16 pt-24 md:pb-28 md:pt-32">{children}</div>
     </section>
   );
 }

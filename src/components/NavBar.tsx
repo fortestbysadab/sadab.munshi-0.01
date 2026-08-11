@@ -23,9 +23,11 @@ const NAV_LABEL_KEYS: Record<string, keyof ReturnType<typeof useLanguage>["t"]["
 };
 
 /**
- * Fluid island navigation — a floating glass pill detached from the top,
- * with a morphing hamburger and a full-screen staggered-reveal menu.
- * z-40 per the documented z scale; the menu overlay is z-50.
+ * Fluid island navigation — a floating glass pill detached from the top.
+ * Mobile: monogram + wordmark always visible (never an anonymous double
+ * circle), and the hamburger is an outlined control so it can't be confused
+ * with the solid brand badge. The menu overlay carries its own top bar with
+ * a close button, since it sits above the pill on the z scale (50 vs 40).
  */
 export default function NavBar() {
   const pathname = usePathname();
@@ -41,14 +43,14 @@ export default function NavBar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-4 z-40 px-4 md:top-5">
+      <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-4 sm:px-4 md:top-5">
         <nav
           aria-label="Main navigation"
-          className="mx-auto flex w-fit max-w-full items-center gap-2 rounded-full border border-forest/[0.08] bg-paper/85 p-2 shadow-medium backdrop-blur-xl"
+          className="mx-auto flex w-full max-w-full items-center justify-between gap-1.5 rounded-full border border-forest/[0.08] bg-paper/85 p-1.5 shadow-medium backdrop-blur-xl sm:gap-2 sm:p-2 lg:w-fit lg:justify-start"
         >
-          <span className="flex items-center gap-2.5 pl-1.5">
+          <span className="flex items-center gap-2 pl-1 sm:gap-2.5 sm:pl-1.5">
             <Logo />
-            <span className="hidden font-serif text-[17px] font-semibold tracking-[-0.01em] text-forest sm:inline">
+            <span className="font-serif text-base font-semibold tracking-[-0.01em] text-forest sm:text-[17px]">
               {site.name}
             </span>
           </span>
@@ -93,13 +95,14 @@ export default function NavBar() {
             </Link>
           </div>
 
-          {/* Mobile hamburger — two lines that morph into an X */}
+          {/* Mobile hamburger — outlined control, visually distinct from the
+              solid brand badge; lines morph into an X while open */}
           <button
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="relative grid h-10 w-10 place-items-center rounded-full bg-forest text-alabaster transition-transform duration-300 ease-spring active:scale-95 lg:hidden"
+            className="relative grid h-10 w-10 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95 lg:hidden"
           >
             <span
               aria-hidden
@@ -117,12 +120,32 @@ export default function NavBar() {
         </nav>
       </header>
 
-      {/* Mobile full-screen overlay — sibling of <header>, not nested inside it
-          (a backdrop-blur/sticky ancestor can become a containing block for
-          position:fixed and clip the overlay). Staggered mask reveal per item. */}
+      {/* Mobile full-screen overlay — sibling of <header>, not nested inside
+          it (a backdrop-blur/sticky ancestor can become a containing block
+          for position:fixed and clip the overlay). It carries its own top
+          bar with a close button because it sits above the pill (z-50). */}
       {open && (
-        <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/90 backdrop-blur-2xl lg:hidden">
-          <ul className="container-page flex flex-1 flex-col justify-center gap-1 pb-12 pt-24">
+        <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/95 backdrop-blur-2xl lg:hidden">
+          {/* Top bar mirrors the island: brand left, close control right */}
+          <div className="container-page flex h-20 items-center justify-between">
+            <span className="flex items-center gap-2.5">
+              <Logo />
+              <span className="font-serif text-base font-semibold tracking-[-0.01em] text-forest">
+                {site.name}
+              </span>
+            </span>
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+              className="relative grid h-10 w-10 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95"
+            >
+              <span aria-hidden className="absolute h-[1.5px] w-4 rotate-45 bg-current" />
+              <span aria-hidden className="absolute h-[1.5px] w-4 -rotate-45 bg-current" />
+            </button>
+          </div>
+
+          <ul className="container-page flex flex-1 flex-col justify-center gap-1 pb-12">
             {navItems.map((item, i) => {
               const active = isActive(pathname, item.href);
               const labelKey = NAV_LABEL_KEYS[item.href];
