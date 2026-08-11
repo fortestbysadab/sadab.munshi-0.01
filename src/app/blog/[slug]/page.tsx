@@ -77,7 +77,7 @@ export default function BlogPostPage({ params }: Params) {
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
               {formatDate(post.date)} · {post.readingTime}
             </p>
-            <h1 className="headline-serif text-5xl leading-[1.08] md:text-6xl">
+            <h1 className="headline-serif text-4xl leading-[1.1] md:text-6xl md:leading-[1.08]">
               {post.title}
             </h1>
           </header>

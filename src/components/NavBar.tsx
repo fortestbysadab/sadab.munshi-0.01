@@ -122,7 +122,7 @@ export default function NavBar() {
           position:fixed and clip the overlay). Staggered mask reveal per item. */}
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/90 backdrop-blur-2xl lg:hidden">
-          <ul className="container-page flex flex-1 flex-col justify-center gap-1 pb-16 pt-32">
+          <ul className="container-page flex flex-1 flex-col justify-center gap-1 pb-12 pt-24">
             {navItems.map((item, i) => {
               const active = isActive(pathname, item.href);
               const labelKey = NAV_LABEL_KEYS[item.href];
@@ -135,7 +135,7 @@ export default function NavBar() {
                 >
                   <Link
                     href={item.href}
-                    className={`block py-4 font-serif text-4xl tracking-[-0.02em] transition-colors duration-300 ${
+                    className={`block py-3.5 font-serif text-3xl tracking-[-0.02em] transition-colors duration-300 sm:py-4 sm:text-4xl ${
                       active ? "italic text-terracotta-deep" : "text-forest hover:text-terracotta"
                     }`}
                   >

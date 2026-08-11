@@ -15,7 +15,7 @@ export default function ContactPageContent() {
 
         <Reveal className="mt-12">
           <div className="shell">
-            <div className="panel p-7 md:p-10">
+            <div className="panel p-5 sm:p-7 md:p-10">
               <ContactForm />
             </div>
           </div>

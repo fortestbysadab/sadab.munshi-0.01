@@ -16,11 +16,11 @@ export default function PageHeader({
     <Reveal>
       <header className="flex flex-col gap-5">
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h1 className="headline-serif max-w-3xl text-5xl leading-[1.08] md:text-6xl">
+        <h1 className="headline-serif max-w-3xl text-4xl leading-[1.1] md:text-6xl md:leading-[1.08]">
           {title}
         </h1>
         {description && (
-          <p className="max-w-prose text-body-lg text-forest-soft">
+          <p className="max-w-prose text-body-md text-forest-soft md:text-body-lg">
             {description}
           </p>
         )}

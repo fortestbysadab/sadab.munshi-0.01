@@ -20,7 +20,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
     <>
       {/* ───────── Botanical hero ───────── */}
       <MeshHero>
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
           {/* Left: headline */}
           <div className="flex max-w-2xl flex-col items-start gap-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-stone bg-paper/70 px-4 py-1.5 backdrop-blur-sm">
@@ -28,14 +28,14 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
               <span className="eyebrow">{t.home.tagline}</span>
             </span>
 
-            <h1 className="headline-serif text-5xl leading-[1.06] md:text-7xl">
+            <h1 className="headline-serif text-4xl leading-[1.08] md:text-7xl md:leading-[1.06]">
               {heroLine1}
               <br />
               {/* pb-1 reserves descender clearance for the italic glyph */}
               <span className="italic-accent inline-block pb-1">{heroLine2}</span>
             </h1>
 
-            <p className="max-w-xl text-body-lg text-forest-soft">
+            <p className="max-w-xl text-body-md text-forest-soft md:text-body-lg">
               {t.home.heroBody}
             </p>
 
@@ -54,7 +54,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
           </div>
 
           {/* Right: arched portrait in a double-bezel tray (the arch motif) */}
-          <Reveal delay={150} className="mx-auto w-full max-w-sm lg:justify-self-end">
+          <Reveal delay={150} className="mx-auto w-full max-w-[300px] sm:max-w-sm lg:justify-self-end">
             <div className="arch-top rotate-[-1.5deg] bg-forest/[0.05] p-2.5 ring-1 ring-forest/[0.07] shadow-medium md:rotate-[-2deg]">
               <div className="arch-top relative aspect-[4/5] overflow-hidden bg-clay-soft">
                 <Image
@@ -73,7 +73,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
 
       {/* ───────── Intro + today's note ───────── */}
       <section className="border-t border-stone">
-        <div className="container-page py-24 md:py-36">
+        <div className="container-page py-16 md:py-36">
           <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
             <Reveal>
               <p className="max-w-prose font-serif text-display-sm leading-[1.4] text-forest md:text-display-md md:leading-[1.35]">
@@ -83,7 +83,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
 
             <Reveal delay={120}>
               <aside className="shell">
-                <div className="panel flex flex-col gap-4 p-7 md:p-8">
+                <div className="panel flex flex-col gap-4 p-6 md:p-8">
                   <p className="eyebrow flex items-center gap-2">
                     <Leaf size={13} weight="light" className="text-terracotta-deep" />
                     {t.home.todayNote}
@@ -100,9 +100,9 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
 
       {/* ───────── Recent writing (featured + asymmetric pair) ───────── */}
       <section className="border-t border-stone bg-clay-soft/50">
-        <div className="container-page py-24 md:py-36">
-          <Reveal className="mb-14 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="headline-serif text-4xl leading-[1.1] md:text-5xl">
+        <div className="container-page py-16 md:py-36">
+          <Reveal className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between md:mb-14">
+            <h2 className="headline-serif text-3xl leading-[1.12] md:text-5xl">
               {t.home.recentTitle}
             </h2>
             <Link href="/blog" className="link-quiet shrink-0">
@@ -131,11 +131,11 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                         />
                       </div>
                     )}
-                    <div className="flex flex-col gap-4 p-8 md:p-10">
+                    <div className="flex flex-col gap-4 p-6 md:p-10">
                       <p className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
                         {formatDateLong(featured.date)}
                       </p>
-                      <h3 className="font-serif text-display-md text-forest">
+                      <h3 className="font-serif text-display-sm text-forest md:text-display-md">
                         {featured.title}
                       </h3>
                       <p className="max-w-prose text-body-md text-forest-soft">
@@ -170,7 +170,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                         />
                       </div>
                     )}
-                    <div className="flex flex-1 flex-col gap-3 p-7 md:p-8">
+                    <div className="flex flex-1 flex-col gap-3 p-6 md:p-8">
                       <p className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
                         {formatDateLong(post.date)}
                       </p>
@@ -192,9 +192,9 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
 
       {/* ───────── Signature — quiet, static, one accent dot ───────── */}
       <section className="border-t border-stone">
-        <div className="container-page py-28 text-center md:py-40">
+        <div className="container-page py-20 text-center md:py-40">
           <Reveal>
-            <p className="font-serif text-5xl italic leading-[1.15] tracking-[-0.02em] text-forest md:text-6xl">
+            <p className="font-serif text-4xl italic leading-[1.15] tracking-[-0.02em] text-forest md:text-6xl">
               {t.home.signature}
               <span aria-hidden className="not-italic text-terracotta">.</span>
             </p>

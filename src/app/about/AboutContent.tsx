@@ -47,7 +47,7 @@ export default function AboutContent() {
               </div>
             </div>
             <article className="prose-doc">
-              <p className="lead font-serif text-display-sm leading-[1.35] text-forest">
+              <p className="lead font-serif text-xl leading-[1.4] text-forest md:text-display-sm md:leading-[1.35]">
                 {t.about.intro}
               </p>
             </article>
@@ -63,7 +63,7 @@ export default function AboutContent() {
         {/* Now */}
         <Reveal className="mt-20">
           <section>
-            <h2 className="headline-serif text-4xl leading-[1.1]">
+            <h2 className="headline-serif text-3xl leading-[1.12] md:text-4xl">
               {t.about.nowTitle}
             </h2>
             <p className="mt-3 text-body-md text-forest-soft">
@@ -73,7 +73,7 @@ export default function AboutContent() {
             <div className="shell mt-8">
               <ol className="panel flex flex-col divide-y divide-stone/70 p-2">
                 {t.about.nowDoing.map((item, i) => (
-                  <li key={i} className="flex gap-5 px-6 py-5">
+                  <li key={i} className="flex gap-4 px-5 py-4 md:gap-5 md:px-6 md:py-5">
                     <span
                       aria-hidden
                       className="mt-0.5 shrink-0 font-mono text-sm tabular-nums text-forest-mute"

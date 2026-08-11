@@ -31,7 +31,7 @@ export default function BlogContent({ posts }: { posts: BlogPostMeta[] }) {
           </div>
         </div>
       ) : (
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
+        <div className="mt-12 grid gap-6 md:mt-16 md:grid-cols-2">
           {/* Featured: newest post, full-width horizontal */}
           <Reveal className="md:col-span-2">
             <Link
@@ -52,7 +52,7 @@ export default function BlogContent({ posts }: { posts: BlogPostMeta[] }) {
                     />
                   </div>
                 )}
-                <div className="flex flex-col gap-4 p-8 md:p-10">
+                <div className="flex flex-col gap-4 p-6 md:p-10">
                   <div className="flex items-center gap-3">
                     <span className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
                       {formatDate(featured.date)}
@@ -63,7 +63,7 @@ export default function BlogContent({ posts }: { posts: BlogPostMeta[] }) {
                       </span>
                     )}
                   </div>
-                  <h2 className="font-serif text-display-md text-forest">
+                  <h2 className="font-serif text-display-sm text-forest md:text-display-md">
                     {featured.title}
                   </h2>
                   <p className="max-w-prose text-body-md text-forest-soft">
@@ -98,7 +98,7 @@ export default function BlogContent({ posts }: { posts: BlogPostMeta[] }) {
                     </div>
                   )}
 
-                  <div className="flex flex-1 flex-col gap-3 p-7 md:p-8">
+                  <div className="flex flex-1 flex-col gap-3 p-6 md:p-8">
                     <span className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
                       {formatDate(post.date)}
                     </span>

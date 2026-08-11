@@ -22,10 +22,14 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply bg-alabaster font-sans text-body-md text-forest;
+    /* Safety net: rotated/offset accents can never push the page sideways
+       on narrow viewports */
+    overflow-x: clip;
   }
 
   ::selection {

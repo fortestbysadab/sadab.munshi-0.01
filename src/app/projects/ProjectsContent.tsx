@@ -65,7 +65,7 @@ function ProjectCard({
         `${!isLink ? "border border-dashed border-stone bg-transparent ring-0" : ""}`
       }
     >
-      <div className="panel relative flex h-full flex-col gap-4 overflow-hidden p-7 md:p-8">
+      <div className="panel relative flex h-full flex-col gap-4 overflow-hidden p-6 md:p-8">
         {/* Ghosted index number */}
         <span
           aria-hidden
@@ -81,7 +81,7 @@ function ProjectCard({
           [{statusLabels[status]}]
         </span>
 
-        <h2 className="font-serif text-display-md text-forest">
+        <h2 className="font-serif text-display-sm text-forest md:text-display-md">
           {project.name}
         </h2>
 
@@ -192,7 +192,7 @@ export default function ProjectsContent() {
     <div className="container-page pb-24 pt-28 md:pb-32 md:pt-36">
       <PageHeader title={t.projects.title} description={t.projects.description} />
 
-      <div className="mt-16 grid items-start gap-6 md:grid-cols-2">
+      <div className="mt-12 grid items-start gap-6 md:mt-16 md:grid-cols-2">
         {t.projects.projects.map((project, i) => (
           <Reveal key={project.name} delay={i * 80} className="h-full">
             <ProjectCard
