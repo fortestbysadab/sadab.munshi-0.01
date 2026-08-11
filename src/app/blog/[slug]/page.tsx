@@ -57,7 +57,7 @@ export default function BlogPostPage({ params }: Params) {
   };
 
   return (
-    <div className="container-page py-24 md:py-32">
+    <div className="container-page pb-24 pt-28 md:pb-32 md:pt-36">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -68,38 +68,40 @@ export default function BlogPostPage({ params }: Params) {
         <div className="mx-auto max-w-2xl">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-caption uppercase tracking-widest text-forest-soft transition-colors hover:text-terracotta"
+            className="link-quiet font-mono text-caption uppercase tracking-[0.14em] text-forest-mute"
           >
             ← All writing
           </Link>
 
           <header className="mt-8 flex flex-col gap-5 border-b border-stone pb-10">
-            <p className="text-caption uppercase tracking-widest text-forest-mute">
+            <p className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
               {formatDate(post.date)} · {post.readingTime}
             </p>
-            <h1 className="headline-serif text-5xl md:text-6xl">
+            <h1 className="headline-serif text-5xl leading-[1.08] md:text-6xl">
               {post.title}
             </h1>
           </header>
         </div>
 
-        {/* Cover image — full width, softly rounded */}
+        {/* Cover image — double-bezel, full width */}
         {post.coverImage && (
-          <div className="mt-12 overflow-hidden rounded-[40px] border border-stone bg-clay-soft shadow-large">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              width={1400}
-              height={762}
-              priority
-              sizes="(max-width: 1400px) 100vw, 1400px"
-              className="h-auto w-full object-cover"
-            />
+          <div className="shell mt-14">
+            <div className="panel overflow-hidden">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                width={1400}
+                height={762}
+                priority
+                sizes="(max-width: 1400px) 100vw, 1400px"
+                className="h-auto w-full object-cover"
+              />
+            </div>
           </div>
         )}
 
         {/* Body — centered, readable column width */}
-        <div className="mx-auto mt-12 max-w-2xl">
+        <div className="mx-auto mt-14 max-w-2xl">
           <MdxContent source={post.content} />
 
           <hr className="my-16 border-0 border-t border-stone" />

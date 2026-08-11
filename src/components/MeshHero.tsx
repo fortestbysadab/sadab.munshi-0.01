@@ -3,21 +3,22 @@ import { ReactNode } from "react";
 /**
  * Botanical hero band.
  *
- * NOTE: filename kept as MeshHero for API stability, but the mesh gradient is
- * gone — this is now a calm botanical backdrop with soft sage/clay organic
- * shapes and a meandering vine line. Same `{children}` API as before.
+ * NOTE: filename kept as MeshHero for API stability. Calm botanical
+ * backdrop with diffused sage/clay light spots and the meandering vine.
+ * Top padding is capped so hero content never floats mid-viewport;
+ * clears the fixed island nav (top-4 + ~64px pill).
  */
 export default function MeshHero({ children }: { children: ReactNode }) {
   return (
     <section className="relative isolate overflow-hidden bg-alabaster">
-      {/* Soft organic background blobs */}
+      {/* Diffused light spots (decorative neutrals only, accent stays locked) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 -z-10 h-[420px] w-[420px] rounded-full bg-sage/15 blur-3xl"
+        className="pointer-events-none absolute -right-24 -top-24 -z-10 h-[460px] w-[460px] rounded-full bg-sage/15 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-32 -left-24 -z-10 h-[380px] w-[380px] rounded-full bg-clay/40 blur-3xl"
+        className="pointer-events-none absolute -bottom-32 -left-24 -z-10 h-[400px] w-[400px] rounded-full bg-clay/40 blur-3xl"
       />
 
       {/* Meandering vine line */}
@@ -36,7 +37,7 @@ export default function MeshHero({ children }: { children: ReactNode }) {
         />
       </svg>
 
-      <div className="container-page py-24 md:py-32">{children}</div>
+      <div className="container-page pb-20 pt-28 md:pb-28 md:pt-32">{children}</div>
     </section>
   );
 }

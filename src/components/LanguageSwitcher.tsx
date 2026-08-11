@@ -16,9 +16,9 @@ export default function LanguageSwitcher() {
     <div
       role="group"
       aria-label={t.langSwitcher.auto}
-      className="flex items-center overflow-hidden rounded-full border border-stone"
+      className="flex items-center gap-0.5 rounded-full border border-forest/[0.08] bg-forest/[0.045] p-1"
     >
-      {OPTIONS.map((opt, i) => (
+      {OPTIONS.map((opt) => (
         <button
           key={opt.value}
           type="button"
@@ -26,11 +26,10 @@ export default function LanguageSwitcher() {
           onClick={() => setLocale(opt.value)}
           aria-pressed={locale === opt.value}
           className={[
-            "h-8 px-3 text-caption uppercase tracking-widest transition-colors duration-300",
-            i > 0 ? "border-l border-stone" : "",
+            "h-7 rounded-full px-2.5 font-mono text-[11px] uppercase tracking-[0.1em] transition-all duration-300 ease-spring active:scale-95",
             locale === opt.value
-              ? "bg-clay-soft font-semibold text-forest"
-              : "text-forest-soft hover:bg-clay-soft hover:text-forest",
+              ? "bg-paper font-medium text-forest shadow-soft"
+              : "text-forest-mute hover:text-forest",
           ].join(" ")}
         >
           {opt.value === "auto" ? t.langSwitcher.auto : opt.label}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import { navItems, site } from "@/lib/site";
 import { useLanguage } from "@/context/LanguageContext";
 import Logo from "./Logo";
@@ -22,6 +22,11 @@ const NAV_LABEL_KEYS: Record<string, keyof ReturnType<typeof useLanguage>["t"]["
   "/contact": "contact",
 };
 
+/**
+ * Fluid island navigation — a floating glass pill detached from the top,
+ * with a morphing hamburger and a full-screen staggered-reveal menu.
+ * z-40 per the documented z scale; the menu overlay is z-50.
+ */
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -36,15 +41,20 @@ export default function NavBar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-stone bg-alabaster/80 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-4 z-40 px-4 md:top-5">
         <nav
           aria-label="Main navigation"
-          className="container-page flex h-16 items-center justify-between gap-4"
+          className="mx-auto flex w-fit max-w-full items-center gap-2 rounded-full border border-forest/[0.08] bg-paper/85 p-2 shadow-medium backdrop-blur-xl"
         >
-          <Logo />
+          <span className="flex items-center gap-2.5 pl-1.5">
+            <Logo />
+            <span className="hidden font-serif text-[17px] font-semibold tracking-[-0.01em] text-forest sm:inline">
+              {site.name}
+            </span>
+          </span>
 
           {/* Desktop nav links */}
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="hidden items-center gap-0.5 lg:flex">
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               const labelKey = NAV_LABEL_KEYS[item.href];
@@ -53,10 +63,10 @@ export default function NavBar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`rounded-full px-4 py-2 text-body-sm transition-colors duration-300 ${
+                    className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300 ${
                       active
-                        ? "text-forest underline decoration-sage decoration-2 underline-offset-8"
-                        : "text-forest-soft hover:text-forest"
+                        ? "bg-forest/[0.07] text-forest"
+                        : "text-forest-soft hover:bg-forest/[0.045] hover:text-forest"
                     }`}
                   >
                     {label}
@@ -67,67 +77,66 @@ export default function NavBar() {
           </ul>
 
           {/* Desktop CTA cluster */}
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             <LanguageSwitcher />
             <Link
               href={site.resumeFile}
-              className="text-body-sm font-medium text-forest-soft transition-colors hover:text-forest"
+              className="hidden rounded-full px-3 py-2 text-sm font-medium text-forest-soft transition-colors duration-300 hover:text-forest xl:inline-flex"
             >
               {t.nav.resume}
             </Link>
-            <Link
-              href="/contact"
-              className="flex h-10 items-center rounded-full bg-forest px-5 text-caption font-semibold uppercase tracking-widest text-alabaster transition-colors duration-300 hover:bg-terracotta"
-            >
+            <Link href="/contact" className="btn-primary-sm">
               {t.nav.getInTouch}
+              <span className="btn-ico-sm" aria-hidden>
+                <ArrowUpRight size={14} weight="bold" />
+              </span>
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger — two lines that morph into an X */}
           <button
             type="button"
-            aria-label="Toggle menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="grid h-12 w-12 place-items-center rounded-full border border-stone text-forest md:hidden"
+            className="relative grid h-10 w-10 place-items-center rounded-full bg-forest text-alabaster transition-transform duration-300 ease-spring active:scale-95 lg:hidden"
           >
-            {open ? <X strokeWidth={1.5} className="h-5 w-5" /> : <Menu strokeWidth={1.5} className="h-5 w-5" />}
+            <span
+              aria-hidden
+              className={`absolute h-[1.5px] w-4 bg-current transition-all duration-300 ease-spring ${
+                open ? "translate-y-0 rotate-45" : "-translate-y-[3.5px]"
+              }`}
+            />
+            <span
+              aria-hidden
+              className={`absolute h-[1.5px] w-4 bg-current transition-all duration-300 ease-spring ${
+                open ? "translate-y-0 -rotate-45" : "translate-y-[3.5px]"
+              }`}
+            />
           </button>
         </nav>
       </header>
 
-      {/* Mobile full-screen overlay — rendered as a sibling of <header>, NOT nested
-          inside it. Keeping it inside a backdrop-blur / sticky ancestor can create
-          a new containing block for position:fixed in some browsers, which pins
-          "fixed" to that ancestor's box instead of the real viewport and can make
-          the overlay render clipped, offset, or invisible. Moving it out here
-          guarantees `fixed inset-0` always covers the true viewport. */}
+      {/* Mobile full-screen overlay — sibling of <header>, not nested inside it
+          (a backdrop-blur/sticky ancestor can become a containing block for
+          position:fixed and clip the overlay). Staggered mask reveal per item. */}
       {open && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto bg-alabaster md:hidden">
-          {/* Overlay top bar: logo + close */}
-          <div className="container-page flex h-16 items-center justify-between border-b border-stone bg-alabaster">
-            <Logo />
-            <button
-              type="button"
-              aria-label="Close menu"
-              onClick={() => setOpen(false)}
-              className="grid h-12 w-12 place-items-center rounded-full border border-stone text-forest"
-            >
-              <X strokeWidth={1.5} className="h-5 w-5" />
-            </button>
-          </div>
-
-          <ul className="container-page flex flex-col gap-2 py-8">
-            {navItems.map((item) => {
+        <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/90 backdrop-blur-2xl lg:hidden">
+          <ul className="container-page flex flex-1 flex-col justify-center gap-1 pb-16 pt-32">
+            {navItems.map((item, i) => {
               const active = isActive(pathname, item.href);
               const labelKey = NAV_LABEL_KEYS[item.href];
               const label = labelKey ? t.nav[labelKey] : item.label;
               return (
-                <li key={item.href} className="border-b border-stone">
+                <li
+                  key={item.href}
+                  className="border-b border-stone/70 motion-safe:animate-menu-item"
+                  style={{ animationDelay: `${90 + i * 70}ms` }}
+                >
                   <Link
                     href={item.href}
-                    className={`block py-4 font-serif text-3xl ${
-                      active ? "italic text-sage-deep" : "text-forest"
+                    className={`block py-4 font-serif text-4xl tracking-[-0.02em] transition-colors duration-300 ${
+                      active ? "italic text-terracotta-deep" : "text-forest hover:text-terracotta"
                     }`}
                   >
                     {label}
@@ -135,21 +144,24 @@ export default function NavBar() {
                 </li>
               );
             })}
-            <li className="mt-6 flex gap-3">
-              <Link
-                href={site.resumeFile}
-                className="btn-secondary-sm flex-1 whitespace-nowrap !px-3 !tracking-wide"
-              >
+            <li
+              className="mt-8 flex gap-3 motion-safe:animate-menu-item"
+              style={{ animationDelay: `${90 + navItems.length * 70}ms` }}
+            >
+              <Link href={site.resumeFile} className="btn-ghost flex-1 px-3">
                 {t.nav.resume}
               </Link>
-              <Link
-                href="/contact"
-                className="btn-primary-sm flex-1 whitespace-nowrap !px-3 !tracking-wide"
-              >
+              <Link href="/contact" className="btn-primary flex-1 pl-3">
                 {t.nav.getInTouch}
+                <span className="btn-ico" aria-hidden>
+                  <ArrowUpRight size={16} weight="bold" />
+                </span>
               </Link>
             </li>
-            <li className="mt-4 flex justify-center">
+            <li
+              className="mt-8 flex justify-center motion-safe:animate-menu-item"
+              style={{ animationDelay: `${140 + navItems.length * 70}ms` }}
+            >
               <LanguageSwitcher />
             </li>
           </ul>

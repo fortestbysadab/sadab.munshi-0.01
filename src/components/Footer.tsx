@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUp } from "@phosphor-icons/react";
 import { footerNav, site } from "@/lib/site";
 import { useLanguage } from "@/context/LanguageContext";
 import Logo from "./Logo";
@@ -39,11 +40,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-stone bg-clay-soft/50">
-      {/* meandering root/vine divider */}
+    <footer className="bg-clay-soft/50">
+      {/* Meandering root/vine divider (decorative neutral) */}
       <svg
         aria-hidden
-        className="h-12 w-full text-sage/40"
+        className="h-12 w-full text-sage/35"
         viewBox="0 0 1400 48"
         fill="none"
         preserveAspectRatio="none"
@@ -56,15 +57,17 @@ export default function Footer() {
         />
       </svg>
 
-      <div className="container-page pb-24 pt-8">
-        {/* Logo sits above the footer nav columns */}
-        <div className="mb-12">
+      <div className="container-page pb-16 pt-10">
+        <div className="mb-14 flex items-center gap-3">
           <Logo shape="circle" />
+          <span className="font-serif text-lg font-semibold tracking-[-0.01em] text-forest">
+            {site.name}
+          </span>
         </div>
 
         <div className="grid grid-cols-2 gap-12 sm:grid-cols-3">
           {footerNav.map((col) => (
-            <div key={col.label} className="flex flex-col gap-4">
+            <div key={col.label} className="flex flex-col gap-5">
               <h3 className="eyebrow">{colLabel(col.label)}</h3>
               <ul className="flex flex-col gap-3">
                 {col.links.map((link) => (
@@ -74,7 +77,7 @@ export default function Footer() {
                       {...("external" in link && link.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="text-body-md text-forest-soft transition-colors duration-300 hover:text-terracotta"
+                      className="text-[15px] text-forest-soft transition-colors duration-300 hover:text-terracotta"
                     >
                       {linkLabel(link.label)}
                     </Link>
@@ -85,10 +88,17 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-stone pt-8 sm:flex-row sm:items-center">
-          <p className="text-caption uppercase tracking-widest text-forest-mute">
+        <div className="mt-16 flex items-center justify-between gap-4 border-t border-stone pt-8">
+          <p className="font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
             © {year} {site.name}. {t.footer.rights}
           </p>
+          <a
+            href="#top"
+            aria-label="Back to top"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-forest/[0.12] text-forest-soft transition-all duration-300 ease-spring hover:border-terracotta hover:text-terracotta active:scale-95"
+          >
+            <ArrowUp size={16} weight="bold" />
+          </a>
         </div>
       </div>
     </footer>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, type KeyboardEvent } from "react";
-import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import { useLanguage } from "@/context/LanguageContext";
 
 type Project = {
@@ -24,7 +24,7 @@ function getStatus(project: Project): StatusKind {
 }
 
 /**
- * "Editorial Dossier" project card.
+ * "Editorial Dossier" project card, rebuilt on the double-bezel system.
  * Restrained at rest; reveals description, tech tags and a prompt on
  * hover (desktop) or tap/keyboard (all devices). Full text always stays in
  * the DOM for screen readers.
@@ -32,14 +32,12 @@ function getStatus(project: Project): StatusKind {
 function ProjectCard({
   project,
   index,
-  stagger,
   statusLabels,
   liveLabel,
   viewDetailsLabel,
 }: {
   project: Project;
   index: number;
-  stagger: string;
   statusLabels: Record<StatusKind, string>;
   liveLabel: string;
   viewDetailsLabel: string;
@@ -49,35 +47,36 @@ function ProjectCard({
   const isLink = Boolean(project.href);
 
   const bracketColor: Record<StatusKind, string> = {
-    live: "text-terracotta",
-    progress: "text-sage-deep",
+    live: "text-terracotta-deep",
+    progress: "text-forest-mute",
     tbd: "text-forest-mute",
   };
 
   const bodyId = `project-desc-${index}`;
 
   const commonClass =
-    `group relative block overflow-hidden rounded-3xl border bg-white p-8 ` +
-    `text-left transition-all duration-500 ease-organic ` +
-    `border-stone hover:border-sage hover:shadow-medium ` +
-    `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-offset-2 focus-visible:ring-offset-alabaster ` +
-    `${!isLink ? "border-dashed bg-clay-soft/60" : ""} ` +
-    `${project.muted ? "opacity-90" : ""} ${stagger}`;
+    `group block h-full text-left focus-visible:outline-none ` +
+    `${project.muted ? "opacity-80" : ""}`;
 
   const Body = (
-    <>
-      {/* Ghosted index number */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute right-6 top-4 select-none font-serif text-7xl leading-none text-forest/[0.06] md:text-8xl"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      <div className="relative flex h-full flex-col gap-4">
-        {/* Bracket status tag */}
+    <div
+      className={
+        `shell card-lift h-full transition-colors duration-500 ` +
+        `${!isLink ? "border border-dashed border-stone bg-transparent ring-0" : ""}`
+      }
+    >
+      <div className="panel relative flex h-full flex-col gap-4 overflow-hidden p-7 md:p-8">
+        {/* Ghosted index number */}
         <span
-          className={`font-mono text-xs uppercase tracking-wide ${bracketColor[status]}`}
+          aria-hidden
+          className="pointer-events-none absolute -right-1 -top-4 select-none font-serif text-8xl leading-none text-forest/[0.05]"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        {/* Bracket status tag — real mono now */}
+        <span
+          className={`font-mono text-[11px] uppercase tracking-[0.14em] ${bracketColor[status]}`}
         >
           [{statusLabels[status]}]
         </span>
@@ -124,19 +123,16 @@ function ProjectCard({
           </div>
         </div>
 
-        {/* Reveal prompt — fades in on hover/tap */}
+        {/* Reveal prompt — labels carry their own arrow glyph */}
         <span
-          className={`mt-auto inline-flex items-center gap-2 pt-3 font-mono text-xs uppercase tracking-wide text-sage-deep transition-all duration-500 ease-out ${
-            expanded
-              ? "opacity-100"
-              : "opacity-0 group-hover:opacity-100"
+          className={`mt-auto inline-flex items-center gap-2 pt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-forest-mute transition-all duration-500 ease-out group-hover:text-terracotta ${
+            expanded ? "opacity-100" : "opacity-0 group-hover:opacity-100"
           }`}
         >
-          <ArrowRight strokeWidth={1.5} className="h-4 w-4" />
           {isLink ? liveLabel : viewDetailsLabel}
         </span>
       </div>
-    </>
+    </div>
   );
 
   // Links open in a new tab; still support keyboard reveal via focus/hover.
@@ -193,20 +189,20 @@ export default function ProjectsContent() {
   };
 
   return (
-    <div className="container-page py-24 md:py-32">
+    <div className="container-page pb-24 pt-28 md:pb-32 md:pt-36">
       <PageHeader title={t.projects.title} description={t.projects.description} />
 
-      <div className="mt-20 grid gap-12 md:grid-cols-2 md:gap-8">
+      <div className="mt-16 grid items-start gap-6 md:grid-cols-2">
         {t.projects.projects.map((project, i) => (
-          <ProjectCard
-            key={project.name}
-            project={project}
-            index={i}
-            stagger={i % 2 === 1 ? "md:translate-y-12" : ""}
-            statusLabels={statusLabels}
-            liveLabel={t.projects.liveLabel}
-            viewDetailsLabel="View details"
-          />
+          <Reveal key={project.name} delay={i * 80} className="h-full">
+            <ProjectCard
+              project={project}
+              index={i}
+              statusLabels={statusLabels}
+              liveLabel={t.projects.liveLabel}
+              viewDetailsLabel="View details"
+            />
+          </Reveal>
         ))}
       </div>
     </div>

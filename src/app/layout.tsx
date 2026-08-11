@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3 } from "next/font/google";
+import { Newsreader, Manrope } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
@@ -8,18 +9,19 @@ import PostHogProvider from "@/components/PostHogProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { site } from "@/lib/site";
 
-const playfair = Playfair_Display({
+// Heritage pairing (the original PHP site's faces), refined for the redesign.
+const newsreader = Newsreader({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-playfair",
+  variable: "--font-newsreader",
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
+const manrope = Manrope({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-source-sans",
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -83,13 +85,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${sourceSans.variable}`}
+      className={`${newsreader.variable} ${manrope.variable} ${GeistMono.variable}`}
     >
-      <body className="flex min-h-screen flex-col">
-        {/* Paper grain texture — fixed full-screen noise overlay above content */}
+      <body id="top" className="flex min-h-screen flex-col">
+        {/* Paper grain texture — fixed, pointer-events-none, above all content
+            (z-60 per the z scale documented in globals.css) */}
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-[100] opacity-[0.015]"
+          className="pointer-events-none fixed inset-0 z-[60] opacity-[0.025]"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
@@ -102,8 +105,13 @@ export default function RootLayout({
         />
         <LanguageProvider>
           <PostHogProvider>
+            <a href="#main" className="skip-link">
+              Skip to content
+            </a>
             <NavBar />
-            <main className="flex-1">{children}</main>
+            <main id="main" className="flex-1">
+              {children}
+            </main>
             <Footer />
           </PostHogProvider>
         </LanguageProvider>

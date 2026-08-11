@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CheckCircle, EnvelopeSimple, PaperPlaneTilt } from "@phosphor-icons/react";
 import { site } from "@/lib/site";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -49,17 +50,10 @@ export default function ContactForm() {
     }
   }
 
-  const inputClass =
-    "h-14 w-full rounded-full border border-stone bg-clay-soft px-5 text-body-md text-forest placeholder:text-forest-mute transition-colors duration-300 focus:border-sage focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 focus:ring-offset-white";
-
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center gap-4 py-10 text-center">
-        <div className="grid h-14 w-14 place-items-center rounded-full bg-success-soft text-sage-deep">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-        </div>
+      <div className="flex flex-col items-center gap-4 py-12 text-center">
+        <CheckCircle size={44} weight="light" className="text-terracotta-deep" />
         <p className="font-serif text-display-sm text-forest">
           {t.contact.successTitle}
         </p>
@@ -71,7 +65,7 @@ export default function ContactForm() {
   return (
     <>
       {status === "error" && feedback && (
-        <div className="mb-5 rounded-2xl border border-error/30 bg-error-soft px-5 py-3 text-body-sm text-error-deep">
+        <div className="mb-6 rounded-lg border border-error/30 bg-error-soft px-5 py-3.5 text-body-sm text-error-deep">
           {feedback}
         </div>
       )}
@@ -87,7 +81,7 @@ export default function ContactForm() {
             type="text"
             placeholder={t.contact.namePlaceholder}
             required
-            className={inputClass}
+            className="field h-14"
           />
         </div>
 
@@ -101,7 +95,7 @@ export default function ContactForm() {
             type="email"
             placeholder={t.contact.emailPlaceholder}
             required
-            className={inputClass}
+            className="field h-14"
           />
         </div>
 
@@ -115,20 +109,23 @@ export default function ContactForm() {
             placeholder={t.contact.messagePlaceholder}
             required
             rows={6}
-            className="w-full rounded-3xl border border-stone bg-clay-soft px-5 py-4 text-body-md text-forest placeholder:text-forest-mute transition-colors duration-300 focus:border-sage focus:outline-none focus:ring-2 focus:ring-sage focus:ring-offset-2 focus:ring-offset-white"
+            className="field resize-y py-4"
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="btn-primary mt-2 h-14 w-full disabled:cursor-not-allowed disabled:opacity-65"
+          className="btn-primary mt-2 h-14 w-full justify-between pl-6 disabled:cursor-not-allowed disabled:opacity-65"
         >
           {status === "submitting" ? t.contact.sending : t.contact.send}
+          <span className="btn-ico" aria-hidden>
+            <PaperPlaneTilt size={16} weight="bold" />
+          </span>
         </button>
       </form>
 
-      <div className="my-8 flex items-center gap-4 text-caption uppercase tracking-widest text-forest-mute">
+      <div className="my-8 flex items-center gap-4 font-mono text-caption uppercase tracking-[0.14em] text-forest-mute">
         <span className="h-px flex-1 bg-stone" />
         <span>{t.contact.orLabel}</span>
         <span className="h-px flex-1 bg-stone" />
@@ -137,13 +134,10 @@ export default function ContactForm() {
       <div className="flex justify-center">
         <a
           href={`mailto:${site.email}`}
-          className="inline-flex items-center gap-2 text-body-sm font-semibold text-forest-soft transition-colors duration-300 hover:text-terracotta"
+          className="link-quiet"
           aria-label={t.contact.emailDirect}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <rect x="2" y="4" width="20" height="16" rx="2" />
-            <polyline points="2,4 12,13 22,4" />
-          </svg>
+          <EnvelopeSimple size={16} weight="regular" aria-hidden />
           {t.contact.emailDirect}
         </a>
       </div>

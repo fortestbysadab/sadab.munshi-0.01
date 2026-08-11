@@ -3,8 +3,16 @@
 @tailwind utilities;
 
 /* ============================================================
-   "Botanical / Organic Serif" base layer
+   "Botanical Editorial" — base layer
+   Z-index scale: sticky nav 40, mobile menu 50, grain 60,
+   skip-link 70. Nothing else uses z-index.
    ============================================================ */
+
+:root {
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-organic: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @layer base {
   * {
     @apply border-stone;
@@ -17,127 +25,182 @@
   }
 
   body {
-    @apply bg-alabaster text-forest font-sans text-body-md;
+    @apply bg-alabaster font-sans text-body-md text-forest;
   }
 
   ::selection {
-    background: #8c9a84;
-    color: #f9f8f4;
+    background: #eedcd0;
+    color: #243029;
   }
 
-  /* Headings default to the serif display face */
   h1, h2, h3, h4 {
     @apply font-serif font-semibold text-forest;
     text-wrap: balance;
   }
+
+  /* One visible focus language everywhere: the locked accent. */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    @apply outline-none ring-2 ring-terracotta ring-offset-2 ring-offset-alabaster;
+  }
 }
 
 @layer components {
-  /* ---- Layout container (max-w-7xl, generous gutters) ---- */
+  /* ---- Layout container ---- */
   .container-page {
     @apply mx-auto w-full max-w-page px-6 md:px-8 lg:px-12;
   }
 
-  /* ---- Serif display headline helper w/ italic emphasis ---- */
+  /* ---- Serif display headline, italic emphasis in the accent ---- */
   .headline-serif {
-    @apply font-serif font-semibold text-forest;
-    letter-spacing: -0.015em;
+    @apply font-serif text-forest;
+    letter-spacing: -0.025em;
   }
   .headline-serif em,
   .italic-accent {
     @apply font-serif italic;
-    color: #6e7c66;
+    color: #9f5238;
   }
 
-  /* ---- Eyebrow: small, uppercase, wide tracking (sans now) ---- */
+  /* ---- Eyebrow: real mono, micro uppercase (max ~1 per 3 sections) ---- */
   .eyebrow {
-    @apply font-sans text-caption font-medium uppercase text-sage-deep;
-    letter-spacing: 0.18em;
+    @apply font-mono text-caption font-medium uppercase text-forest-mute;
+    letter-spacing: 0.22em;
   }
 
-  /* ---- Cards ---- */
-  .card-marketing {
-    @apply rounded-3xl border border-stone bg-white p-8 shadow-soft
-           transition-all duration-500 ease-organic;
+  /* ============================================================
+     Double-bezel (Doppelrand): outer tray + concentric inner core.
+     Every major surface uses this, never a flat card.
+     ============================================================ */
+  .shell {
+    @apply rounded-2xl bg-forest/[0.045] p-2 ring-1 ring-forest/[0.06];
   }
-  .card-marketing:hover {
-    @apply -translate-y-2 shadow-large;
+  .panel {
+    @apply rounded-xl bg-paper shadow-bezel;
+  }
+  .card-lift {
+    transition: transform 0.5s var(--ease-spring), box-shadow 0.5s var(--ease-spring);
+  }
+  .card-lift:hover {
+    @apply -translate-y-1.5 shadow-large;
+  }
+  .card-lift:active {
+    transform: translateY(-1px) scale(0.995);
   }
 
-  /* ---- Buttons ---- */
-  /* Primary: forest pill, uppercase wide tracking, terracotta on hover */
+  /* ============================================================
+     Buttons — sentence case, pill = interactive only.
+     Primary uses button-in-button: the arrow lives in its own
+     nested circle, flush to the right inner padding.
+     ============================================================ */
   .btn-primary {
-    @apply inline-flex h-12 items-center justify-center rounded-full bg-forest px-8
-           font-sans text-sm font-semibold uppercase tracking-widest text-alabaster
-           transition-all duration-300 ease-organic hover:bg-terracotta;
-  }
-  /* Secondary: transparent, sage border + sage text */
-  .btn-secondary {
-    @apply inline-flex h-12 items-center justify-center rounded-full border border-sage
-           bg-transparent px-8 font-sans text-sm font-semibold uppercase tracking-widest
-           text-sage-deep transition-all duration-300 ease-organic
-           hover:border-terracotta hover:text-terracotta;
+    @apply inline-flex h-12 items-center gap-2 rounded-full bg-forest pl-6 pr-2
+           font-sans text-[15px] font-semibold text-alabaster
+           transition-all duration-300 ease-spring hover:bg-terracotta active:scale-[0.98];
   }
   .btn-primary-sm {
-    @apply inline-flex h-12 items-center justify-center rounded-full bg-forest px-6
-           font-sans text-sm font-semibold uppercase tracking-widest text-alabaster
-           transition-all duration-300 ease-organic hover:bg-terracotta;
+    @apply inline-flex h-10 items-center gap-2 rounded-full bg-forest pl-5 pr-1.5
+           font-sans text-sm font-semibold text-alabaster
+           transition-all duration-300 ease-spring hover:bg-terracotta active:scale-[0.98];
   }
-  .btn-secondary-sm {
-    @apply inline-flex h-12 items-center justify-center rounded-full border border-sage
-           bg-transparent px-6 font-sans text-sm font-semibold uppercase tracking-widest
-           text-sage-deep transition-all duration-300 ease-organic
-           hover:border-terracotta hover:text-terracotta;
+  .btn-ico {
+    @apply ml-2 grid h-9 w-9 place-items-center rounded-full bg-white/15
+           transition-all duration-300 ease-spring;
+  }
+  .btn-ico-sm {
+    @apply ml-1.5 grid h-7 w-7 place-items-center rounded-full bg-white/15
+           transition-all duration-300 ease-spring;
+  }
+  /* Internal kinetic tension: the nested circle brightens and the arrow
+     drifts diagonally when the parent button is hovered. */
+  .btn-primary:hover .btn-ico,
+  .btn-primary-sm:hover .btn-ico-sm {
+    @apply bg-white/25;
+  }
+  .btn-primary .btn-ico svg,
+  .btn-primary-sm .btn-ico-sm svg {
+    transition: transform 0.3s var(--ease-spring);
+  }
+  .btn-primary:hover .btn-ico svg,
+  .btn-primary-sm:hover .btn-ico-sm svg {
+    transform: translate(1px, -1px);
+  }
+  .btn-ghost {
+    @apply inline-flex h-12 items-center justify-center rounded-full border border-forest/[0.14]
+           bg-transparent px-6 font-sans text-[15px] font-semibold
+           text-forest transition-all duration-300 ease-spring
+           hover:border-terracotta hover:text-terracotta active:scale-[0.98];
+  }
+  /* Text links with an animating arrow — the tertiary tier. */
+  .link-quiet {
+    @apply inline-flex items-center gap-2 font-sans text-[15px] font-semibold text-forest
+           transition-colors duration-300 hover:text-terracotta;
+  }
+  .link-quiet svg {
+    @apply transition-transform duration-300 ease-spring;
+  }
+  .link-quiet:hover svg {
+    @apply translate-x-1;
   }
 
   /* ---- Inline body link ---- */
   .link-inline {
-    @apply text-sage-deep underline decoration-stone underline-offset-4
+    @apply font-medium text-forest underline decoration-stone underline-offset-4
            transition-colors duration-300 hover:text-terracotta hover:decoration-terracotta;
   }
 
-  /* ---- Arch image mask (Roman arch) ---- */
-  .arch-top {
-    border-top-left-radius: 9999px;
-    border-top-right-radius: 9999px;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
+  /* ---- Form field (inputs 16px radius, accent focus) ---- */
+  .field {
+    @apply w-full rounded-lg border border-stone bg-paper px-5 text-body-md text-forest
+           placeholder:text-forest-mute transition-all duration-300 ease-spring
+           focus:border-terracotta focus:outline-none focus:ring-4 focus:ring-terracotta/15;
   }
 
   /* ---- Chip / tag ---- */
   .chip {
     @apply inline-flex items-center rounded-full border border-stone bg-transparent
-           px-3 py-1 font-sans text-caption uppercase tracking-widest text-forest-soft;
+           px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-forest-soft;
+  }
+
+  /* ---- Skip to content (a11y) ---- */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[70]
+           focus:inline-flex focus:h-11 focus:items-center focus:rounded-full focus:bg-forest
+           focus:px-6 focus:text-sm focus:font-semibold focus:text-alabaster;
+  }
+
+  /* ---- Arch image mask (the portrait motif — its only use) ---- */
+  .arch-top {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
   }
 }
 
-/* ---- Decorative signature (soft sage→terracotta sheen) ---- */
-.signature-shine {
-  background: linear-gradient(
-    100deg,
-    #2d3a31 0%,
-    #2d3a31 38%,
-    #8c9a84 48%,
-    #c27b66 52%,
-    #8c9a84 56%,
-    #2d3a31 66%,
-    #2d3a31 100%
-  );
-  background-size: 250% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: signature-sheen 6s ease-in-out infinite;
+/* ============================================================
+   Scroll-in reveal: blur + rise via IntersectionObserver.
+   Applied by <Reveal>; delay via --reveal-delay.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(6px);
+  transition:
+    opacity 0.8s var(--ease-spring),
+    transform 0.8s var(--ease-spring),
+    filter 0.8s var(--ease-spring);
+  transition-delay: var(--reveal-delay, 0ms);
 }
-@keyframes signature-sheen {
-  0% { background-position: 150% 0; }
-  100% { background-position: -50% 0; }
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }
 
 /* ============================================================
-   Long-form prose (blog posts) — botanical typography
+   Long-form prose (blog posts) — botanical editorial
    ============================================================ */
 .prose-doc {
   @apply text-body-lg text-forest-soft;
@@ -171,10 +234,6 @@
 }
 .prose-doc ul {
   @apply list-disc space-y-2 pl-6 text-body-lg text-forest-soft;
-  list-style-type: "🌿  ";
-}
-.prose-doc ul {
-  list-style-type: disc;
 }
 .prose-doc ol {
   @apply list-decimal space-y-2 pl-6 text-body-lg text-forest-soft;
@@ -183,22 +242,30 @@
   @apply my-3xl border-0 border-t border-stone;
 }
 .prose-doc blockquote {
-  @apply border-l-2 border-sage pl-6 font-serif text-display-sm italic text-forest;
+  @apply border-l-2 border-terracotta/40 pl-6 font-serif text-display-sm italic text-forest;
+}
+.prose-doc code {
+  @apply rounded-md bg-clay-soft px-1.5 py-0.5 font-mono text-code text-forest;
 }
 
-/* ---- Scroll-in fade + rise ---- */
-.reveal {
-  animation: fade-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+/* ---- Page-intro fade (kept from before) ---- */
 @keyframes fade-rise {
   0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }

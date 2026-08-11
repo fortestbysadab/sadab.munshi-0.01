@@ -9,11 +9,11 @@ export default function Badge({
 }) {
   const tones = {
     default: "border-stone bg-transparent text-forest-soft",
-    accent: "border-sage bg-success-soft text-sage-deep",
+    accent: "border-terracotta/30 bg-terracotta-soft text-terracotta-deep",
   };
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-3 py-1 font-sans text-caption uppercase tracking-widest ${tones[tone]}`}
+      className={`inline-flex items-center rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] ${tones[tone]}`}
     >
       {children}
     </span>
