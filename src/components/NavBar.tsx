@@ -48,11 +48,8 @@ export default function NavBar() {
           aria-label="Main navigation"
           className="mx-auto flex w-full max-w-full items-center justify-between gap-1.5 rounded-full border border-forest/[0.08] bg-paper/85 p-1.5 shadow-medium backdrop-blur-xl sm:gap-2 sm:p-2 lg:w-fit lg:justify-start"
         >
-          <span className="flex items-center gap-2 pl-1 sm:gap-2.5 sm:pl-1.5">
+          <span className="flex items-center pl-1 sm:pl-1.5">
             <Logo />
-            <span className="font-serif text-base font-semibold tracking-[-0.01em] text-forest sm:text-[17px]">
-              {site.name}
-            </span>
           </span>
 
           {/* Desktop nav links */}
@@ -128,11 +125,8 @@ export default function NavBar() {
         <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/95 backdrop-blur-2xl lg:hidden">
           {/* Top bar mirrors the island: brand left, close control right */}
           <div className="container-page flex h-20 items-center justify-between">
-            <span className="flex items-center gap-2.5">
+            <span className="flex items-center">
               <Logo />
-              <span className="font-serif text-base font-semibold tracking-[-0.01em] text-forest">
-                {site.name}
-              </span>
             </span>
             <button
               type="button"

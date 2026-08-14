@@ -76,7 +76,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
         <div className="container-page py-16 md:py-36">
           <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
             <Reveal>
-              <p className="max-w-prose font-serif text-display-sm leading-[1.4] text-forest md:text-display-md md:leading-[1.35]">
+              <p className="max-w-prose font-serif text-[22px] font-normal leading-[1.45] text-forest md:text-[30px] md:leading-[1.4]">
                 {t.home.introBody}
               </p>
             </Reveal>
@@ -88,7 +88,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                     <Leaf size={13} weight="light" className="text-terracotta-deep" />
                     {t.home.todayNote}
                   </p>
-                  <p className="font-serif text-display-sm italic leading-[1.35] text-forest">
+                  <p className="font-serif text-xl font-normal italic leading-[1.4] text-forest md:text-2xl">
                     {mood}
                   </p>
                 </div>
