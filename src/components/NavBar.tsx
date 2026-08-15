@@ -70,8 +70,8 @@ export default function NavBar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 w-full border-b border-forest/[0.08] bg-paper/85 shadow-soft backdrop-blur-xl transition-transform duration-500 ease-spring ${
-          hidden && !open ? "-translate-y-full" : "translate-y-0"
+        className={`fixed left-3 right-3 top-3 z-40 rounded-full border border-forest/[0.08] bg-paper/85 shadow-medium backdrop-blur-xl transition-transform duration-500 ease-spring sm:inset-x-0 sm:top-0 sm:rounded-none sm:border-x-0 sm:border-t-0 sm:shadow-soft ${
+          hidden && !open ? "-translate-y-[calc(100%+1rem)] sm:-translate-y-full" : "translate-y-0"
         }`}
       >
         <nav
@@ -153,7 +153,7 @@ export default function NavBar() {
           the hamburger was. */}
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/95 backdrop-blur-2xl lg:hidden">
-          <div className="flex h-16 w-full shrink-0 items-center justify-between px-4 sm:h-[68px] sm:px-6">
+          <div className="flex h-16 w-full shrink-0 items-center justify-between px-7 sm:h-[68px] sm:px-6">
             <span className="flex items-center">
               <Logo />
             </span>
@@ -191,13 +191,13 @@ export default function NavBar() {
               );
             })}
             <li
-              className="mt-8 flex gap-3 motion-safe:animate-menu-item"
+              className="mt-8 flex gap-3 motion-safe:animate-menu-item md:mx-auto md:w-full md:max-w-md"
               style={{ animationDelay: `${90 + navItems.length * 70}ms` }}
             >
               <Link href={site.resumeFile} className="btn-ghost flex-1 px-3">
                 {t.nav.resume}
               </Link>
-              <Link href="/contact" className="btn-primary flex-1 pl-3">
+              <Link href="/contact" className="btn-primary flex-1 justify-center pl-3">
                 {t.nav.getInTouch}
                 <span className="btn-ico" aria-hidden>
                   <ArrowUpRight size={16} weight="bold" />
