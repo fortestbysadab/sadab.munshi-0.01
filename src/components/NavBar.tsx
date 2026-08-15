@@ -23,15 +23,17 @@ const NAV_LABEL_KEYS: Record<string, keyof ReturnType<typeof useLanguage>["t"]["
 };
 
 /**
- * Fluid island navigation — a floating glass pill detached from the top.
- * Mobile: monogram + wordmark always visible (never an anonymous double
- * circle), and the hamburger is an outlined control so it can't be confused
- * with the solid brand badge. The menu overlay carries its own top bar with
- * a close button, since it sits above the pill on the z scale (50 vs 40).
+ * Full-width glass header bar (edge-to-edge at every breakpoint; internal
+ * padding creates the gutters, no max-width wrapper).
+ *
+ * Scroll behavior: slides up and hides on scroll-down, slides back on any
+ * scroll-up, and is always visible near the top of the page ("near top" =
+ * within 72px). Transform-only slide, so it animates on the compositor.
  */
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const { t } = useLanguage();
 
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -41,19 +43,47 @@ export default function NavBar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      if (y < 72) setHidden(false); // near top: always visible
+      else if (y > lastY + 4) setHidden(true); // scrolling down: hide
+      else if (y < lastY - 4) setHidden(false); // scrolling up: show
+      lastY = y;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
-      <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-4 sm:px-4 md:top-5">
+      <header
+        className={`fixed inset-x-0 top-0 z-40 w-full border-b border-forest/[0.08] bg-paper/85 shadow-soft backdrop-blur-xl transition-transform duration-500 ease-spring ${
+          hidden && !open ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
         <nav
           aria-label="Main navigation"
-          className="mx-auto flex w-full max-w-full items-center justify-between gap-1.5 rounded-full border border-forest/[0.08] bg-paper/85 p-1.5 shadow-medium backdrop-blur-xl sm:gap-2 sm:p-2 lg:w-fit lg:justify-start"
+          className="flex h-16 w-full items-center justify-between gap-8 px-4 sm:h-[68px] sm:px-6 lg:px-10"
         >
-          <span className="flex items-center pl-1 sm:pl-1.5">
+          <span className="flex shrink-0 items-center">
             <Logo />
           </span>
 
           {/* Desktop nav links */}
-          <ul className="hidden items-center gap-0.5 lg:flex">
+          <ul className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               const labelKey = NAV_LABEL_KEYS[item.href];
@@ -62,7 +92,7 @@ export default function NavBar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300 ${
+                    className={`whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300 ${
                       active
                         ? "bg-forest/[0.07] text-forest"
                         : "text-forest-soft hover:bg-forest/[0.045] hover:text-forest"
@@ -76,15 +106,15 @@ export default function NavBar() {
           </ul>
 
           {/* Desktop CTA cluster */}
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden shrink-0 items-center gap-2 lg:flex">
             <LanguageSwitcher />
             <Link
               href={site.resumeFile}
-              className="hidden rounded-full px-3 py-2 text-sm font-medium text-forest-soft transition-colors duration-300 hover:text-forest xl:inline-flex"
+              className="hidden whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-forest-soft transition-colors duration-300 hover:text-forest xl:inline-flex"
             >
               {t.nav.resume}
             </Link>
-            <Link href="/contact" className="btn-primary-sm">
+            <Link href="/contact" className="btn-primary-sm shrink-0">
               {t.nav.getInTouch}
               <span className="btn-ico-sm" aria-hidden>
                 <ArrowUpRight size={14} weight="bold" />
@@ -92,14 +122,13 @@ export default function NavBar() {
             </Link>
           </div>
 
-          {/* Mobile hamburger — outlined control, visually distinct from the
-              solid brand badge; lines morph into an X while open */}
+          {/* Mobile hamburger — outlined control, distinct from the brand badge */}
           <button
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="relative grid h-10 w-10 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95 lg:hidden"
+            className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95 lg:hidden"
           >
             <span
               aria-hidden
@@ -119,12 +148,12 @@ export default function NavBar() {
 
       {/* Mobile full-screen overlay — sibling of <header>, not nested inside
           it (a backdrop-blur/sticky ancestor can become a containing block
-          for position:fixed and clip the overlay). It carries its own top
-          bar with a close button because it sits above the pill (z-50). */}
+          for position:fixed and clip the overlay). Its top bar matches the
+          header's height and gutters so the close control sits exactly where
+          the hamburger was. */}
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/95 backdrop-blur-2xl lg:hidden">
-          {/* Top bar mirrors the island: brand left, close control right */}
-          <div className="container-page flex h-20 items-center justify-between">
+          <div className="flex h-16 w-full shrink-0 items-center justify-between px-4 sm:h-[68px] sm:px-6">
             <span className="flex items-center">
               <Logo />
             </span>
@@ -132,7 +161,7 @@ export default function NavBar() {
               type="button"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
-              className="relative grid h-10 w-10 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95"
+              className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full border border-forest/15 text-forest transition-all duration-300 ease-spring active:scale-95"
             >
               <span aria-hidden className="absolute h-[1.5px] w-4 rotate-45 bg-current" />
               <span aria-hidden className="absolute h-[1.5px] w-4 -rotate-45 bg-current" />

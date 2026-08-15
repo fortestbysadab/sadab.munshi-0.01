@@ -99,12 +99,12 @@
      nested circle, flush to the right inner padding.
      ============================================================ */
   .btn-primary {
-    @apply inline-flex h-12 items-center gap-2 rounded-full bg-forest pl-6 pr-2
+    @apply inline-flex h-12 items-center gap-2 whitespace-nowrap rounded-full bg-forest pl-6 pr-2
            font-sans text-[15px] font-semibold text-alabaster
            transition-all duration-300 ease-spring hover:bg-terracotta active:scale-[0.98];
   }
   .btn-primary-sm {
-    @apply inline-flex h-10 items-center gap-2 rounded-full bg-forest pl-5 pr-1.5
+    @apply inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full bg-forest pl-5 pr-1.5
            font-sans text-sm font-semibold text-alabaster
            transition-all duration-300 ease-spring hover:bg-terracotta active:scale-[0.98];
   }
@@ -131,7 +131,7 @@
     transform: translate(1px, -1px);
   }
   .btn-ghost {
-    @apply inline-flex h-12 items-center justify-center rounded-full border border-forest/[0.14]
+    @apply inline-flex h-12 items-center justify-center whitespace-nowrap rounded-full border border-forest/[0.14]
            bg-transparent px-6 font-sans text-[15px] font-semibold
            text-forest transition-all duration-300 ease-spring
            hover:border-terracotta hover:text-terracotta active:scale-[0.98];
