@@ -76,7 +76,7 @@ export default function NavBar() {
       >
         <nav
           aria-label="Main navigation"
-          className="flex h-16 w-full items-center justify-between gap-8 px-4 sm:h-[68px] sm:px-6 lg:px-10"
+          className="flex h-14 w-full items-center justify-between gap-8 px-4 sm:h-[68px] sm:px-6 lg:px-10"
         >
           <span className="flex shrink-0 items-center">
             <Logo />
@@ -153,7 +153,7 @@ export default function NavBar() {
           the hamburger was. */}
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-alabaster/95 backdrop-blur-2xl lg:hidden">
-          <div className="flex h-16 w-full shrink-0 items-center justify-between px-7 sm:h-[68px] sm:px-6">
+          <div className="flex h-20 w-full shrink-0 items-center justify-between px-7 sm:h-[68px] sm:px-6">
             <span className="flex items-center">
               <Logo />
             </span>
