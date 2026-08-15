@@ -60,7 +60,7 @@ export default function AboutContent() {
               aria-hidden
               width={400}
               height={366}
-              className="absolute right-0 top-0 hidden h-auto w-[160px] rotate-6 md:block lg:w-[210px]"
+              className="absolute right-0 top-0 hidden h-auto w-[160px] rotate-6 md:block lg:w-[150px]"
             />
 
             <div className="flex flex-col gap-10 sm:flex-row sm:items-start">
