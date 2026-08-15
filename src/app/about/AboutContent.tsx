@@ -50,8 +50,8 @@ export default function AboutContent() {
           </header>
         </Reveal>
 
-        {/* Intro: polaroid + words, notebook illustration resting top-right
-            on tablet/desktop (hidden on phones so it never crowds the text) */}
+        {/* Intro: polaroid + words. Notebook illustration rests top-right on
+            tablet/desktop; phones get a small copy below the intro instead. */}
         <Reveal className="mt-14">
           <section className="relative">
             <Image
@@ -93,6 +93,16 @@ export default function AboutContent() {
                 <p className="mt-6 text-body-md leading-[1.7] text-forest-soft">
                   {t.about.body}
                 </p>
+                {/* Phones only: small notebook resting below the intro text,
+                    right-aligned so it never interrupts the reading column */}
+                <Image
+                  src={`${A}/about-notebook-pen.webp`}
+                  alt=""
+                  aria-hidden
+                  width={400}
+                  height={366}
+                  className="ml-auto mt-8 h-auto w-24 rotate-6 md:hidden"
+                />
               </div>
             </div>
           </section>
@@ -179,11 +189,11 @@ export default function AboutContent() {
         {/* Bottom CTA card — cream block, postcard bottom-right */}
         <Reveal className="mt-16 md:mt-20">
           <section className="relative overflow-hidden rounded-2xl bg-clay-soft ring-1 ring-stone">
-            <div className="relative z-10 flex flex-col items-start gap-4 p-7 pr-28 sm:pr-36 md:p-10 md:pr-52">
+            <div className="relative z-10 flex flex-col items-start gap-3 p-5 pr-24 sm:gap-4 sm:p-7 sm:pr-36 md:p-10 md:pr-52">
               <p className="eyebrow">
                 {t.about.closingProjects} · {t.about.closingBlog}
               </p>
-              <h2 className="headline-serif text-3xl leading-[1.12] md:text-4xl">
+              <h2 className="headline-serif text-2xl leading-[1.15] sm:text-3xl sm:leading-[1.12] md:text-4xl">
                 {t.about.closingLine}
               </h2>
               <Link href="/projects" className="btn-primary mt-1">
@@ -199,7 +209,7 @@ export default function AboutContent() {
               aria-hidden
               width={200}
               height={133}
-              className="absolute -bottom-3 right-2 h-auto w-20 rotate-[8deg] sm:w-28 md:right-6 md:w-36"
+              className="absolute bottom-3 right-3 h-auto w-16 rotate-[8deg] sm:-bottom-3 sm:right-2 sm:w-28 md:right-6 md:w-36"
             />
           </section>
         </Reveal>
