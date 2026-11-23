@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { site } from "@/lib/site";
 
 /**
- * Contact form endpoint (migrated from PHP submit.php).
+ * Contact form endpoint.
  *
  * Sends a real email via Resend (https://resend.com).
  *
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   const email = (body.email || "").trim();
   const message = (body.message || "").trim();
 
-  // --- Validation (mirrors the original PHP rules) ---
+  // --- Validation ---
   if (!name || !email || !message) {
     return NextResponse.json({
       success: false,

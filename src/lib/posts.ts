@@ -10,14 +10,14 @@
  *   readingTime: "6 min read"
  *   excerpt: "..."
  *   description: "SEO meta description"
- *   coverImage: "/images/blog/the-metric-trap.png"
+ *   coverImage: "/images/blog/the-metric-trap.webp"
  *   published: true
  *   ---
  *
  *   Markdown / MDX body here...
  *
  * To publish a new post: drop a `.mdx` file in `content/blog/`, add its cover
- * PNG to `public/images/blog/`, and push. No code changes required.
+ * WebP to `public/images/blog/`, and push. No code changes required.
  */
 
 import fs from "fs";

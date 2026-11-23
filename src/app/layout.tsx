@@ -9,7 +9,7 @@ import PostHogProvider from "@/components/PostHogProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { site } from "@/lib/site";
 
-// Heritage pairing (the original PHP site's faces), refined for the redesign.
+// Editorial display serif for headlines, paired with Manrope for body and UI.
 const newsreader = Newsreader({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],

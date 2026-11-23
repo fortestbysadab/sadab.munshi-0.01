@@ -8,12 +8,6 @@ const nextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  async redirects() {
-    return [
-      // The /now page was merged into /about.
-      { source: "/now", destination: "/about", permanent: true },
-    ];
-  },
 };
 
 export default nextConfig;

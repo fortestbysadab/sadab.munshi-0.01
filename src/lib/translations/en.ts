@@ -51,7 +51,7 @@ export const en: Translations = {
       "I'm Sadab. I got curious about how money works and haven't stopped pulling on that thread.",
     body: "I'm a student. Finance is what I keep coming back to — how systems are built, how money moves, why most tools for managing it feel like they were made for someone else. When something doesn't make sense to me, I try to make a small version of it myself. Writing is how I make sure I actually understood it.",
     nowTitle: "Now",
-    nowSubtitle: "What I'm focused on at the moment. A /now page, basically.",
+    nowSubtitle: "What I'm focused on at the moment.",
     nowDoing: [
       "Student. Trying to figure out how things work before I run out of time to be curious.",
       "Working on a project in the finance space.",

@@ -1,5 +1,5 @@
 /**
- * Site-wide configuration (migrated from PHP config.php).
+ * Site-wide configuration.
  * Single source of truth for site metadata, nav, and social links.
  */
 

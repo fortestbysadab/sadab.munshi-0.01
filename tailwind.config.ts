@@ -1,12 +1,13 @@
 import type { Config } from "tailwindcss";
 
 /**
- * "Botanical Editorial" design system — 2026 redesign.
+ * "Botanical Editorial" design system.
  * Single source of truth for colors, type, radius, shadows.
  *
- * Heritage: the site's original Newsreader + Manrope pairing (see README),
- * refined. Warm bone canvas, deep-forest ink, ONE locked accent (terracotta)
- * for every interactive emphasis. Sage and clay are neutral decoration only.
+ * Newsreader for editorial display type, Manrope for UI and body copy, and
+ * Geist Mono for eyebrows, metadata, and code. Warm bone canvas, deep-forest
+ * ink, and one locked terracotta accent for every interactive emphasis.
+ * Sage and clay are neutral decoration only.
  *
  * Shape lock: pill = interactive controls only, 28/20px concentric shells =
  * surfaces (double-bezel), 16px = inputs, arch = the portrait motif only.
@@ -41,7 +42,7 @@ const config: Config = {
         "error-soft": "#F5E2DD",
         "error-deep": "#8F3D35",
 
-        // ── Aliases so legacy class names keep working ──
+        // ── Aliases used by shared component classes ──
         primary: "#243029",
         "on-primary": "#F7F5EF",
         ink: "#243029",
@@ -61,8 +62,8 @@ const config: Config = {
         "sage-deep": "#5F6D57", // kept for decorative tints
       },
       fontFamily: {
-        // Newsreader (editorial display serif, heritage) + Manrope (UI/body)
-        // + Geist Mono (real mono this time — eyebrows, meta, code)
+        // Newsreader (editorial display serif) + Manrope (UI/body)
+        // + Geist Mono (eyebrows, metadata, code)
         serif: ["var(--font-newsreader)", "Georgia", "Cambria", "serif"],
         sans: ["var(--font-manrope)", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
@@ -118,7 +119,7 @@ const config: Config = {
         large:
           "0 2px 6px rgba(36, 48, 41, 0.05), 0 26px 52px -14px rgba(36, 48, 41, 0.14)",
         bezel: "inset 0 1px 0 rgba(255, 255, 255, 0.7)",
-        // Legacy aliases → mapped onto the same ladder
+        // Shadow aliases mapped onto the same ladder
         "level-1": "0 1px 2px rgba(36, 48, 41, 0.04), 0 4px 14px rgba(36, 48, 41, 0.04)",
         "level-2": "0 1px 2px rgba(36, 48, 41, 0.04), 0 4px 14px rgba(36, 48, 41, 0.04)",
         "level-3": "0 2px 4px rgba(36, 48, 41, 0.04), 0 14px 34px -10px rgba(36, 48, 41, 0.10)",
