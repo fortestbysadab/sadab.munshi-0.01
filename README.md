@@ -1,178 +1,220 @@
-# Sadab Munshi — Personal Website (Next.js)
+# Sadab Munshi — Personal Website
 
-A clean, fast personal portfolio and blog, **migrated from PHP to Next.js** with a
-Vercel-inspired design system. App Router · TypeScript · Tailwind CSS · Geist fonts.
+Personal portfolio and blog built with **Next.js App Router**, **TypeScript**,
+**Tailwind CSS**, and **MDX**. It includes a file-based blog, English/Bengali/Hindi
+language switching, a Resend-powered contact form, SEO metadata, and analytics.
 
----
+## Tech stack
 
-## ✨ What changed in the migration
+- **Next.js 14** — App Router, React Server Components, static generation
+- **React 18** and **TypeScript**
+- **Tailwind CSS 3** — design tokens and shared component classes
+- **MDX** — `next-mdx-remote/rsc` with `gray-matter` frontmatter
+- **Phosphor Icons**
+- **Resend** — contact-form email delivery
+- **PostHog** and **Vercel Analytics**
+- **Newsreader**, **Manrope**, and **Geist Mono** fonts
 
-| Old (PHP)                              | New (Next.js)                                              |
-| -------------------------------------- | --------------------------------------------------------- |
-| `index.php` router + `.htaccess`       | App Router file-based routing (`src/app/**`)              |
-| `layout.php` + `includes/*.php`        | `src/app/layout.tsx` + `src/components/*`                 |
-| `config.php`                           | `src/lib/site.ts`                                          |
-| `pages/*.php` content                  | `src/app/*/page.tsx`                                       |
-| `pages/blog/*.php` (8 posts)           | `content/blog/*.mdx` (file-based MDX) + `src/app/blog/[slug]/page.tsx` |
-| `submit.php` + `db.php` (MySQL)        | `src/app/api/contact/route.ts` (validation + log)        |
-| Hand-rolled SEO meta in `layout.php`   | Next.js Metadata API + `sitemap.ts` / `robots.ts`        |
-| Newsreader/Manrope fonts              | **Geist + Geist Mono** (the design system's faces)        |
+## Features
 
-The old contact form persisted messages to an InfinityFree MySQL database. Those
-credentials don't run on Vercel, so the new API route validates the payload and
-logs it. See [Contact form](#-contact-form) to wire up email/DB.
+- Responsive portfolio with home, about, projects, blog, watching, and contact pages
+- File-based MDX blog with static post routes, cover images, reading time, and a newest-post badge
+- English, Bengali, and Hindi UI with browser-language detection and a persisted language preference
+- Contact form with server-side validation and Resend email delivery
+- Per-page metadata, Open Graph tags, JSON-LD, `sitemap.xml`, and `robots.txt`
+- Scroll-reveal animations, accessible navigation, and a mobile menu
+- Optional PostHog analytics and Vercel Analytics
 
----
+## Getting started
 
-## 🎨 Design system
-
-All UI follows the Vercel-inspired token set, encoded once in
-[`tailwind.config.ts`](./tailwind.config.ts) and [`globals.css`](./src/app/globals.css):
-
-- **Colors** — ink `#171717` primary, near-white `#fafafa` canvas, a single
-  `#0070f3` link blue, and the four-pair brand mesh gradient (cyan/blue/violet/
-  magenta/amber) used **at hero scale only**.
-- **Type** — Geist (geometric sans, weights 400/500/600) for everything narrative;
-  Geist Mono for eyebrows, captions, and code. Aggressive negative tracking on
-  display sizes; sentence-case, period-terminated headlines.
-- **Shape** — 100px pill CTAs for marketing, 6px radius for nav-scale buttons.
-- **Elevation** — stacked subtle shadows (`shadow-level-1` … `shadow-level-5`)
-  with inset hairline rings — never a single heavy drop shadow.
-
----
-
-## 🚀 Getting started
+Requires **Node.js 18.17+** and npm.
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-Build & run production:
+Open [http://localhost:3000](http://localhost:3000).
 
-```bash
-npm run build
-npm start
-```
+The site runs without environment variables, but the contact form will not send
+email until Resend is configured and analytics will stay disabled until PostHog
+is configured.
 
----
+### Scripts
 
-## 📁 Structure
+| Command         | Description                    |
+| --------------- | ------------------------------ |
+| `npm run dev`   | Start the development server   |
+| `npm run build` | Create a production build      |
+| `npm start`     | Run the production build       |
+| `npm run lint`  | Run Next.js lint checks        |
 
-```
+## Environment variables
+
+Copy `.env.example` to `.env.local` and set the values you need.
+
+| Variable                  | Required          | Description                                                                 |
+| ------------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `RESEND_API_KEY`          | For email sending | Resend API key. Without it, the contact endpoint returns a friendly error.  |
+| `CONTACT_TO`              | No                | Inbox that receives messages. Defaults to `site.email` in `src/lib/site.ts`. |
+| `CONTACT_FROM`            | For email sending | Verified sender address, e.g. `Website <noreply@example.com>`.              |
+| `NEXT_PUBLIC_POSTHOG_KEY` | No                | PostHog project API key. Analytics are disabled when omitted.               |
+| `NEXT_PUBLIC_POSTHOG_HOST`| No                | PostHog host. Defaults to `https://us.i.posthog.com`.                       |
+
+For production, verify the sender domain in Resend and use an address on that
+domain for `CONTACT_FROM`.
+
+## Project structure
+
+```text
 content/
-└── blog/                     # Blog posts as .mdx files (zero-code publishing)
-    ├── the-metric-trap.mdx
-    └── … (8 posts)
+└── blog/                     # MDX blog posts
+public/
+├── assets/images/            # Logo, favicons, portrait, about-page artwork
+├── images/blog/              # Blog cover images
+├── manifest.json             # Web app manifest
+└── favicon.ico
 src/
 ├── app/
-│   ├── layout.tsx            # Root layout: fonts, nav, footer, global metadata
-│   ├── page.tsx              # Home (mesh hero + recent posts)
-│   ├── globals.css           # Tailwind layers + design-system components
-│   ├── about/page.tsx
-│   ├── projects/page.tsx
-│   ├── now/page.tsx
-│   ├── watching/page.tsx
-│   ├── contact/
-│   │   ├── page.tsx
-│   │   └── ContactForm.tsx   # Client form → /api/contact
+│   ├── about/                # About page and client content
+│   ├── api/contact/route.ts  # Contact-form API endpoint
 │   ├── blog/
-│   │   ├── page.tsx          # Blog index
-│   │   └── [slug]/page.tsx   # Individual post (SSG)
-│   ├── api/contact/route.ts  # Form handler (replaces submit.php)
-│   ├── not-found.tsx         # 404
-│   ├── sitemap.ts
-│   └── robots.ts
-├── components/               # NavBar, Footer, Logo, MeshHero, PageHeader, Badge, MdxContent
+│   │   ├── [slug]/page.tsx   # Individual post (statically generated)
+│   │   └── page.tsx          # Blog index
+│   ├── contact/              # Contact page and form
+│   ├── projects/             # Projects page and cards
+│   ├── watching/             # Watching list
+│   ├── globals.css           # Base styles and shared component classes
+│   ├── layout.tsx            # Root layout, fonts, metadata, JSON-LD
+│   ├── page.tsx              # Home page
+│   ├── HomeContent.tsx       # Home page client content
+│   ├── not-found.tsx         # 404 page
+│   ├── robots.ts             # robots.txt
+│   └── sitemap.ts            # sitemap.xml
+├── components/               # Navigation, footer, hero, cards, MDX renderer, etc.
+├── context/
+│   └── LanguageContext.tsx   # Language state and translation provider
 └── lib/
-    ├── site.ts               # Site config, nav, social links
-    ├── posts.ts              # Reads content/blog/*.mdx (fs + gray-matter)
-    └── utils.ts              # Date helpers
-public/
-├── assets/images/            # Favicons, logo, OG image, portrait
-├── images/blog/              # Blog cover images (512×279)
-├── resume/                   # Résumé PDF
-└── manifest.json
+    ├── posts.ts              # MDX reading, frontmatter parsing, post helpers
+    ├── site.ts               # Site metadata, navigation, and social links
+    ├── utils.ts              # Date helpers
+    └── translations/         # English, Bengali, and Hindi copy
 ```
 
+## Blog posts
+
+Posts are MDX files in [`content/blog/`](./content/blog). The filename becomes
+the URL slug.
+
+```mdx
+---
+title: "My New Post"
+date: "2026-06-19"
+modified: "2026-06-19"
+readingTime: "4 min read"
+excerpt: "One-line summary shown on cards."
+description: "SEO meta description."
+coverImage: "/images/blog/my-new-post.webp"
+published: true
 ---
 
-## ✍️ Adding a blog post (zero-code, MDX)
+Opening paragraph in Markdown.
 
-Posts are plain `.mdx` files in [`content/blog/`](./content/blog). To publish:
+## A section
 
-1. **Create** `content/blog/my-new-post.mdx` (the filename becomes the URL slug):
+More text, **bold**, *italic*, [links](https://example.com), and lists.
+```
 
-   ```mdx
-   ---
-   title: "My New Post"
-   date: "2026-06-19"
-   modified: "2026-06-19"
-   readingTime: "4 min read"
-   excerpt: "One-line summary shown on cards."
-   description: "SEO meta description."
-   coverImage: "/images/blog/my-new-post.png"
-   published: true
-   ---
-
-   Opening paragraph in plain Markdown.
-
-   ## A section
-
-   More text, **bold**, *italic*, [links](https://example.com), lists — all MDX.
-   ```
-
-2. **Drop the cover image** at `public/images/blog/my-new-post.png`
-   (displayed at 512×279 on cards, full-width on the post page).
-
-3. **`git push`** → Vercel auto-deploys. No code changes.
+Add the cover image at `public/images/blog/my-new-post.webp` and the post will
+appear automatically in the blog index, home page, sitemap, and static routes.
 
 Notes:
 
-- `published: false` (or omitting it as `false`) hides a draft from the site.
-- The newest post by `date` automatically gets the **New** badge (`isNew`).
-- Posts are read at build time with `fs` + `gray-matter`; the body is compiled
-  with `next-mdx-remote/rsc`. Routes, sitemap, and SEO metadata are generated
-  automatically from frontmatter.
+- Posts are read at build time with `fs` and `gray-matter`.
+- `published: false` hides a post from the site.
+- The newest published post receives the **New** badge.
+- The body is compiled with `next-mdx-remote/rsc`.
+- Post metadata, Open Graph data, article JSON-LD, and static paths are generated
+  from frontmatter in `src/app/blog/[slug]/page.tsx`.
+- Cover images are animated WebP and are served with `unoptimized` so Next.js
+  preserves the animation.
 
----
+## Languages
 
-## 📨 Contact form (Resend)
+UI copy lives in [`src/lib/translations/`](./src/lib/translations):
 
-`src/app/api/contact/route.ts` validates the payload (name/email/message, same
-rules as the old PHP) and sends a real email via [Resend](https://resend.com).
+- `en.ts` — English
+- `bn.ts` — Bengali
+- `hi.ts` — Hindi
+- `types.ts` — shared translation shape
 
-**Setup:**
+When adding or changing copy, update all three language files so their shapes
+stay identical. `LanguageContext.tsx` detects the browser language by default,
+stores a manual choice in `localStorage` under `sm-lang`, and exposes the active
+translations through `useLanguage()`.
 
-1. Create a free account at [resend.com](https://resend.com) and an API key.
-2. Copy `.env.example` → `.env.local` and fill in:
-   ```bash
-   RESEND_API_KEY=re_xxxxxxxx
-   CONTACT_TO=contact@sadabmunshi.online
-   CONTACT_FROM=Website <onboarding@resend.dev>   # or your verified domain
-   ```
-3. For production, **verify your domain** in Resend, then set
-   `CONTACT_FROM=Website <noreply@sadabmunshi.online>` so deliverability is solid.
-4. On Vercel, add the same three variables under
-   **Project → Settings → Environment Variables**.
+## Site configuration
 
-The form replies-to the sender's address, so you can answer directly from your
-inbox. If `RESEND_API_KEY` is missing, the API returns a friendly "email me
-directly" message instead of crashing.
+[`src/lib/site.ts`](./src/lib/site.ts) is the single source of truth for:
 
----
+- Site name, description, author, URL, and email
+- Social links
+- Main navigation
+- Footer navigation
 
-## ☁️ Deploy to Vercel
+Update `site.url` when deploying to a different domain so canonical URLs,
+Open Graph URLs, `sitemap.xml`, and JSON-LD stay correct.
+
+## Contact form
+
+The contact flow is:
+
+1. `src/app/contact/ContactForm.tsx` collects the name, email, and message.
+2. It sends a `POST` request to `/api/contact`.
+3. `src/app/api/contact/route.ts` validates the fields and sends the message
+   through Resend.
+4. The sender's address is used as `replyTo`, so replies go directly to them.
+
+If `RESEND_API_KEY` is missing, the endpoint returns a clear error instead of
+crashing. Setup instructions and the full variable reference are in
+[`.env.example`](./.env.example).
+
+## SEO and analytics
+
+- Page metadata is defined with the Next.js Metadata API.
+- The root layout adds a `Person` JSON-LD block.
+- Blog posts add `Article` JSON-LD and article-specific Open Graph metadata.
+- `src/app/sitemap.ts` generates `sitemap.xml` for static pages and blog posts.
+- `src/app/robots.ts` allows the public site and excludes `/contact`,
+  `/watching`, and `/api/`.
+- Vercel Analytics is included in the root layout.
+- PostHog initializes on the client when `NEXT_PUBLIC_POSTHOG_KEY` is set.
+
+## Design system
+
+The UI uses a **Botanical Editorial** design system:
+
+- Warm bone canvas, deep forest ink, and a single terracotta accent
+- Newsreader for editorial headlines, Manrope for body and UI text, Geist Mono
+  for eyebrows, metadata, and code
+- Pill-shaped interactive controls and concentric double-bezel surfaces
+- Shared tokens in [`tailwind.config.ts`](./tailwind.config.ts) and
+  [`src/app/globals.css`](./src/app/globals.css)
+- Scroll-reveal and menu animations that respect `prefers-reduced-motion`
+
+## Deployment
+
+The project is ready for Vercel:
 
 ```bash
-npm i -g vercel
-vercel
+npm run build
 ```
 
-Or push to GitHub and import the repo at [vercel.com/new](https://vercel.com/new).
-Set the production domain to `www.sadabmunshi.me` and update `site.url` in
-`src/lib/site.ts` if it ever changes.
+Import the repository at [vercel.com/new](https://vercel.com/new), add the
+environment variables above, and deploy. Set the production domain and update
+`site.url` in `src/lib/site.ts` if it changes.
 
 ---
 
-**Author:** Sadab Munshi · Migrated to Next.js with a Vercel-inspired design system.
+**Author:** Sadab Munshi

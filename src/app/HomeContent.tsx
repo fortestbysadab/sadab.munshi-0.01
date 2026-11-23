@@ -120,12 +120,13 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                 >
                   <div className="panel grid h-full overflow-hidden md:grid-cols-[1.1fr_1fr]">
                     {featured.coverImage && (
-                      <div className="relative aspect-[512/279] w-full overflow-hidden bg-clay-soft md:aspect-auto md:h-full md:min-h-[300px]">
+                      <div className="relative aspect-video w-full overflow-hidden bg-clay-soft">
                         <Image
                           src={featured.coverImage}
                           alt={featured.title}
                           width={512}
                           height={279}
+                          unoptimized
                           sizes="(max-width: 768px) 100vw, 45vw"
                           className="h-full w-full object-cover transition-transform duration-700 ease-spring group-hover:scale-105"
                         />
@@ -159,12 +160,13 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                 >
                   <div className="panel flex h-full flex-col overflow-hidden">
                     {post.coverImage && (
-                      <div className="relative aspect-[512/279] w-full overflow-hidden bg-clay-soft">
+                      <div className="relative aspect-video w-full overflow-hidden bg-clay-soft">
                         <Image
                           src={post.coverImage}
                           alt={post.title}
                           width={512}
                           height={279}
+                          unoptimized
                           sizes="(max-width: 768px) 100vw, 40vw"
                           className="h-full w-full object-cover transition-transform duration-700 ease-spring group-hover:scale-105"
                         />

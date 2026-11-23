@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 
 /**
- * Renders MDX body content with components styled to the Vercel-inspired
+ * Renders MDX body content with components styled to the Botanical Editorial
  * design system. Used inside the `.prose-doc` wrapper on blog post pages.
  *
  * This is a React Server Component (next-mdx-remote/rsc), so the MDX is

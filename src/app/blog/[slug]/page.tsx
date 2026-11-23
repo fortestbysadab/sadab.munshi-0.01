@@ -87,15 +87,17 @@ export default function BlogPostPage({ params }: Params) {
         {post.coverImage && (
           <div className="shell mt-14">
             <div className="panel overflow-hidden">
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                width={1400}
-                height={762}
-                priority
-                sizes="(max-width: 1400px) 100vw, 1400px"
-                className="h-auto w-full object-cover"
-              />
+              <div className="relative aspect-video w-full">
+                <Image
+                  src={post.coverImage}
+                  alt={post.title}
+                  fill
+                  priority
+                  unoptimized
+                  sizes="(max-width: 1400px) 100vw, 1400px"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         )}
