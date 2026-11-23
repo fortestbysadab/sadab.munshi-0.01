@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Manrope } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
@@ -27,14 +27,36 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  applicationName: site.name,
   title: {
     default: site.name,
     template: `%s / ${site.name}`,
   },
   description: site.description,
-  authors: [{ name: site.author }],
+  keywords: [
+    "Sadab Munshi",
+    "personal portfolio",
+    "technology blog",
+    "software projects",
+    "builder",
+  ],
+  authors: [{ name: site.author, url: site.url }],
+  creator: site.author,
+  publisher: site.author,
+  category: "technology",
   alternates: {
     canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     type: "website",
@@ -43,7 +65,14 @@ export const metadata: Metadata = {
     description: site.description,
     url: site.url,
     locale: "en_US",
-    images: [{ url: "/assets/images/og-image.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/assets/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: `${site.name} — personal portfolio and writing`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -55,13 +84,26 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/assets/images/favicon.ico" },
-      { url: "/assets/images/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/assets/images/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
     ],
-    apple: [{ url: "/assets/images/apple-touch-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
+    apple: [
+      {
+        url: "/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
   manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#243029",
+  colorScheme: "light",
 };
 
 export default function RootLayout({

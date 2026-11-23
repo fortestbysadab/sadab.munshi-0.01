@@ -2,10 +2,33 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site";
 import AboutContent from "./AboutContent";
 
+const description =
+  "Sadab Munshi is a student exploring money, systems, and technology by building small things and writing about what he learns.";
+
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Sadab Munshi — a student trying to understand how money and systems work. He builds small things to figure things out, then writes about what he finds.",
+  description,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    type: "profile",
+    url: "/about",
+    title: "About Sadab Munshi",
+    description,
+    images: [
+      {
+        url: "/assets/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sadab Munshi — personal portfolio and writing",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Sadab Munshi",
+    description,
+    images: ["/assets/images/og-image.png"],
+  },
 };
 
 const personSchema = {

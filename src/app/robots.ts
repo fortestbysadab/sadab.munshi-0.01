@@ -6,7 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/contact", "/watching", "/api/"],
+      // Contact and Watching declare noindex in page metadata. They must remain
+      // crawlable for search engines to see and honour that directive.
+      disallow: ["/api/"],
     },
     sitemap: `${site.url}/sitemap.xml`,
   };

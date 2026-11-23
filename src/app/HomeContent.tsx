@@ -120,7 +120,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                 >
                   <div className="panel grid h-full overflow-hidden md:grid-cols-[1.1fr_1fr]">
                     {featured.coverImage && (
-                      <div className="relative aspect-video w-full overflow-hidden bg-clay-soft">
+                      <div className="relative aspect-[16/8.2] w-full overflow-hidden bg-clay-soft">
                         <Image
                           src={featured.coverImage}
                           alt={featured.title}
@@ -128,7 +128,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                           height={279}
                           unoptimized
                           sizes="(max-width: 768px) 100vw, 45vw"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-spring group-hover:scale-105"
+                          className="h-full w-full origin-center object-cover scale-[1.12] transition-transform duration-700 ease-spring group-hover:scale-[1.16]"
                         />
                       </div>
                     )}
@@ -160,7 +160,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                 >
                   <div className="panel flex h-full flex-col overflow-hidden">
                     {post.coverImage && (
-                      <div className="relative aspect-video w-full overflow-hidden bg-clay-soft">
+                      <div className="relative aspect-[16/8.2] w-full overflow-hidden bg-clay-soft">
                         <Image
                           src={post.coverImage}
                           alt={post.title}
@@ -168,7 +168,7 @@ export default function HomeContent({ posts }: { posts: BlogPostMeta[] }) {
                           height={279}
                           unoptimized
                           sizes="(max-width: 768px) 100vw, 40vw"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-spring group-hover:scale-105"
+                          className="h-full w-full origin-center object-cover scale-[1.12] transition-transform duration-700 ease-spring group-hover:scale-[1.16]"
                         />
                       </div>
                     )}

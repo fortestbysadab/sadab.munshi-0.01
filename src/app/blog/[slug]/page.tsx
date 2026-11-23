@@ -18,23 +18,31 @@ export function generateMetadata({ params }: Params): Metadata {
   if (!post) return { title: "Not Found" };
 
   const url = `${site.url}/blog/${post.slug}`;
+  const description = post.description || post.excerpt;
+  const image = post.coverImage || "/assets/images/og-image.png";
+  const imageSize = post.coverImage
+    ? { width: 1200, height: 675 }
+    : { width: 1200, height: 630 };
+
   return {
     title: post.title,
-    description: post.description || post.excerpt,
+    description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       type: "article",
       title: post.title,
-      description: post.description || post.excerpt,
+      description,
       url,
       publishedTime: post.date,
       modifiedTime: post.modified,
       authors: [site.author],
+      images: [{ url: image, ...imageSize, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.description || post.excerpt,
+      description,
+      images: [image],
     },
   };
 }
@@ -43,17 +51,22 @@ export default function BlogPostPage({ params }: Params) {
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
+  const articleUrl = `${site.url}/blog/${post.slug}`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     headline: post.title,
-    url: `${site.url}/blog/${post.slug}`,
+    description: post.description || post.excerpt,
+    url: articleUrl,
     image: post.coverImage
       ? `${site.url}${post.coverImage}`
       : `${site.url}/assets/images/og-image.png`,
     datePublished: post.date,
     dateModified: post.modified,
-    author: { "@type": "Person", name: site.author },
+    inLanguage: "en",
+    author: { "@type": "Person", name: site.author, url: site.url },
+    publisher: { "@type": "Person", name: site.author, url: site.url },
   };
 
   return (
@@ -87,7 +100,7 @@ export default function BlogPostPage({ params }: Params) {
         {post.coverImage && (
           <div className="shell mt-14">
             <div className="panel overflow-hidden">
-              <div className="relative aspect-video w-full">
+              <div className="relative aspect-[16/8.2] w-full overflow-hidden">
                 <Image
                   src={post.coverImage}
                   alt={post.title}
@@ -95,7 +108,7 @@ export default function BlogPostPage({ params }: Params) {
                   priority
                   unoptimized
                   sizes="(max-width: 1400px) 100vw, 1400px"
-                  className="object-cover"
+                  className="origin-center object-cover scale-[1.12]"
                 />
               </div>
             </div>
